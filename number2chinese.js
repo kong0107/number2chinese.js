@@ -1,4 +1,4 @@
-Number.prototype.toChinese = function() {
+const number2chinese = function(){
     const characters = {
         traditional: {
             lower: {
@@ -31,31 +31,38 @@ Number.prototype.toChinese = function() {
     };
     characters.T = characters.t = characters.traditional;
     characters.S = characters.s = characters.simplified;
-    
-    return function(script, set) {
+
+    return function(number, script, set) {
         if(!script || !characters[script]) script = "traditional";
         if(!set || !characters[script][set]) set = "lower";
         const c = characters[script][set];
-        
-        let value = this.valueOf();
+
+        //let value = this.valueOf();
         let result = "", temp = "";
-        let arr = Math.abs(value).toString().split("").map(d=>parseInt(d)).reverse();
+        let arr = Math.abs(number).toString().split("").map(d=>parseInt(d)).reverse();
         for(let w = 0; w < arr.length / 4; ++w) {
             for(let t = 0; t < 4; ++t) {
                 let i = w * 4 + t;
                 if(i == arr.length) break;
                 let d = arr[i];
-                
+
                 if(t && d) temp += c.tens.charAt(t-1);
                 if(d || (t && arr[i-1])) temp += c.digits.charAt(d);
             }
             if(temp) {
                 if(w) result += c.wans.charAt(w-1);
-                result += temp; 
+                result += temp;
                 temp = "";
             }
         }
-        if(value < 0) result += c.minus;
+        if(number < 0) result += c.minus;
         return result.split("").reverse().join("");
     }
 }();
+
+Number.prototype.toChinese = function(script, set) {
+    return number2chinese(this.valueOf(), script, set);
+}
+
+if(typeof module != "undefined" && module.exports)
+    module.exports = number2chinese;

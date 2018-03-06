@@ -2,14 +2,49 @@
 <html lang="zh-Hant-TW">
 <head>
   <meta charset="utf-8">
-
   <title>number2chinese Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <script src="number2chinese.js"></script>
+  <script>
+    window.addEventListener("load", event=>{
+      document.getElementById("input").addEventListener("input", event=>{
+        const v = parseInt(event.target.value, 10);
+        ['T', 'S'].forEach(script=>{
+          ['lower', 'upper'].forEach(set=>{
+            document.getElementById(`${script}_${set}`).innerHTML = v.toChinese(script, set);
+          });
+        });
+      });
+      document.getElementById("input").dispatchEvent(new Event("input"));
+    });
+  </script>
+  <style type="text/css">
+    dt, dd {
+        display: inline-block;
+        min-width: 8em;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello world</h1>
+  Input: <input id="input" type="number" step="1" value="-300600012">
+  <dl>
+    <dt>Traditional Lower</dt>
+    <dd id="T_lower"></dd>
+  </dl>
+  <dl>
+    <dt>Traditional Upper</dt>
+    <dd id="T_upper"></dd>
+  </dl>
+  <dl>
+    <dt>Simplified Lower</dt>
+    <dd id="S_lower"></dd>
+  </dl>
+  <dl>
+    <dt>Simplified Upper</dt>
+    <dd id="S_upper"></dd>
+  </dl>
+  <footer>
+    <a href="https://github.com/kong0107/number2chinese.js">source code</a>
+  </footer>
 </body>
 </html>

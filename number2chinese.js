@@ -37,7 +37,6 @@ const number2chinese = function(){
         if(!set || !characters[script][set]) set = "lower";
         const c = characters[script][set];
 
-        //let value = this.valueOf();
         let result = "", temp = "";
         let arr = Math.abs(number).toString().split("").map(d=>parseInt(d)).reverse();
         for(let w = 0; w < arr.length / 4; ++w) {
@@ -55,6 +54,7 @@ const number2chinese = function(){
                 temp = "";
             }
         }
+        result = result.replace(/([十拾])[一壹]$/, "$1");
         if(number < 0) result += c.minus;
         return result.split("").reverse().join("");
     }
